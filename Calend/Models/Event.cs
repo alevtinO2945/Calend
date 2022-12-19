@@ -12,6 +12,8 @@ namespace Calend.Models
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
 
+        public int ResourceId { get; set; }
+
 
         public virtual Location Location { get; set; }
         public virtual AppUser User { get; set; }

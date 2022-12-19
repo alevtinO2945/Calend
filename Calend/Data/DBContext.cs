@@ -11,22 +11,37 @@ namespace Calend.Data
     {
 
 
+        public DBContext(DbContextOptions<DBContext> options) : base(options)
+        {
+        }
+
         public DBContext()
         {
         }
 
-
-        public virtual DbSet<Event> Events { get; set; }
-        public virtual DbSet<Transaction> Transactions { get; set; }
-        public virtual DbSet<AppUser> AppUsers { get; set; }
-        public virtual DbSet<Location> Locations { get; set } 
-
-
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            IConfigurationRoot Configuration = new ConfigurationBuilder().Build();
-            // connect to sql server with connection string from app settings
-            options.UseSqlServer(Configuration.GetConnectionString("Default"));
+            if (!optionsBuilder.IsConfigured)
+            {
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+                   .SetBasePath(Directory.GetCurrentDirectory())
+                   .AddJsonFile("appsettings.json")
+                   .Build();
+                var connectionString = configuration.GetConnectionString("DefaultConnection");
+                optionsBuilder.UseSqlServer(connectionString);
+            }
         }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+        }
+
+
+        public DbSet<Event> Events { get; set; }
+        public  DbSet<AppUser> AppUsers { get; set; }
+        public  DbSet<Location> Locations { get; set; } 
+
     }
 }

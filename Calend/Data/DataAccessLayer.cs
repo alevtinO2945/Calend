@@ -1,4 +1,5 @@
 ﻿using Calend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Calend.Data
 {
@@ -17,6 +18,7 @@ namespace Calend.Data
     }
 
     public class DataAccessLayer: IDataAccessLayer
+        
     {
         private DBContext db = new DBContext();
         public List<Event> GetEvents()
